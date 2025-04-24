@@ -1,9 +1,19 @@
+import os
+import requests
 import streamlit as st
 from PIL import Image
 from ultralytics import YOLO
 
+# Download model if not already present
+model_path = "model/best.pt"
+if not os.path.exists(model_path):
+    os.makedirs("model", exist_ok=True)
+    url = "https://drive.google.com/uc?id=10tdWPlq_UsjRrCxORsni4w_Wsj-thoeJ"  # Replace with your actual Google Drive link
+    with open(model_path, "wb") as f:
+        f.write(requests.get(url).content)
+
 # Load your model
-model = YOLO('model/best.pt')  # Make sure your model file is in a "model" folder
+model = YOLO(model_path)  # Load the model after download
 
 st.title("Sign Language Detection App")
 st.write("Upload an image to detect sign language gestures.")
